@@ -1,5 +1,5 @@
 {
-  "name": "zev",
+  "name": "@evolt/zev",
   "version": "0.0.1",
   "description": "Zev - Zip for Evolt, Supercharged by Zstandard",
   "type": "module",
@@ -21,8 +21,8 @@
   },
   "homepage": "https://github.com/evoltsw/zev#readme",
   "dependencies": {
+    "@gera2ld/tarjs": "^0.3.1",
     "@mongodb-js/zstd": "^2.0.1",
-    "@nodelib/fs.walk": "^3.0.1",
-    "tar": "^7.4.3"
+    "@nodelib/fs.walk": "^3.0.1"
   }
 }

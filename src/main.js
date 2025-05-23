@@ -3,7 +3,7 @@ import * as path from "node:path";
 import * as process from "node:process";
 import * as zlib from "node:zlib";
 
-import * as tar from "tar";
+import { TarWriter } from "@gera2ld/tarjs";
 
 /**
  * 
@@ -39,18 +39,13 @@ const getAllFiles = (dirPath) => {
 const target = process.argv[2];
 const paths = getAllFiles(target);
 const buffers = [];
-const compressedBuffers = []
+const compressedBuffers = [];
+const myWriter = new TarWriter();
 
 for(const path of paths) {
-	const zstdBuf = zlib.zstdCompressSync(fs.readFileSync(path), { level: 22 })
+	const zstdBuf = zlib.zstdCompressSync(fs.readFileSync(path), { level: 22 });
 	console.log(`Compressed ${path}: ${Math.floor(zstdBuf.byteLength)} bytes`);
-	buffers.push(zstdBuf);
+	myWriter.addFile(path, zstdBuf);
 }
 
-const tarStream = tar.c({ gzip: false }, buffers);
-
-tarStream.on("data", chunk => compressedBuffers.push(chunk));
-
-await new Promise(tarStream.on.bind(tarStream, "end"));
-
-fs.writeFileSync(`${target}.zev`, zlib.zstdCompressSync(Buffer.concat(compressedBuffers), { level: 22 }));
+fs.writeFileSync(`${target}.zev`, zlib.zstdCompressSync(await myWriter.write().then(blob => blob.arrayBuffer()), { level: 22 }));
