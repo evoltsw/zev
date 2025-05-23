@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/evoltsw/zev#readme",
   "dependencies": {
-    "@gera2ld/tarjs": "^0.3.1"
+    "@gera2ld/tarjs": "^0.3.1",
+    "@types/node": "^22.15.21"
   }
 }

@@ -1,0 +1,24 @@
+{
+  "version": "5",
+  "specifiers": {
+    "npm:@gera2ld/tarjs@~0.3.1": "0.3.1"
+  },
+  "npm": {
+    "@babel/runtime@7.27.1": {
+      "integrity": "sha512-1x3D2xEk2fRo3PAhwQwu5UubzgiVWSXTBfWpVd2Mx2AzRqJuDJCsgaDVZ7HB5iGzDW1Hl1sWN2mFyKjmR9uAog=="
+    },
+    "@gera2ld/tarjs@0.3.1": {
+      "integrity": "sha512-ygcXngovMTj+zI3j2ZSjGiIziELuSCfk5tjUHBjUL/9/9dPLzIdNefW5cZZopB67Di/j/6H9BCGp/0o45qRefQ==",
+      "dependencies": [
+        "@babel/runtime"
+      ]
+    }
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:@gera2ld/tarjs@~0.3.1"
+      ]
+    }
+  }
+}

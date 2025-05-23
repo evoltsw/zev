@@ -10,42 +10,46 @@ import { TarWriter } from "@gera2ld/tarjs";
  * @param { fs.PathLike } dirPath 
  * @returns { fs.PathOrFileDescriptor[] }
  */
-const getAllFiles = (dirPath) => {
+const
+	getAllFiles = (dirPath) => {
 
-	const
-		files = [],
-		items = fs.readdirSync(dirPath, { withFileTypes: true })
-	;
+		const
+			files = [],
+			items = fs.readdirSync(dirPath, { withFileTypes: true })
+		;
 
-	for (const item of items) {
+		for (const item of items) {
 
-		const fullPath = path.join(dirPath, item.name);
+			const fullPath = path.join(dirPath, item.name);
 
-		if (item.isDirectory()) {
+			if (item.isDirectory()) {
 
-			const subFiles = getAllFiles(fullPath);
-			files.push(...subFiles);
+				const subFiles = getAllFiles(fullPath);
+				files.push(...subFiles);
 
-		} else {
+			} else {
 
-			files.push(fullPath);
+				files.push(fullPath);
 
+			}
 		}
-	}
 
-	return files;
-}
+		return files;
+	},
 
-const target = process.argv[2];
-const paths = getAllFiles(target);
-const buffers = [];
-const compressedBuffers = [];
-const myWriter = new TarWriter();
+	target = process.argv[2],
+
+	paths = getAllFiles(target),
+
+	myWriter = new TarWriter()
+;
 
 for(const path of paths) {
+
 	const zstdBuf = zlib.zstdCompressSync(fs.readFileSync(path), { level: 22 });
 	console.log(`Compressed ${path}: ${Math.floor(zstdBuf.byteLength)} bytes`);
 	myWriter.addFile(path, zstdBuf);
+
 }
 
 fs.writeFileSync(`${target}.zev`, zlib.zstdCompressSync(await myWriter.write().then(blob => blob.arrayBuffer()), { level: 22 }));
